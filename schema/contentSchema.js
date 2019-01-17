@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const {db} = require('../config/database');
-
+const Course=require('./courseSchema');
+const User=require('./userSchema');
 const Content = db.define('tblContent',{
     id:{
         type: Sequelize.INTEGER,
@@ -24,7 +25,10 @@ const Content = db.define('tblContent',{
     type: Sequelize.STRING,
         allowNull: false
 },
-
+    cat_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -55,7 +59,10 @@ const Content = db.define('tblContent',{
         allowNull: true
     }
 });
-
+Content.belongsTo(Course, {foreignKey: 'cat_id'});
+ Content.belongsTo(User, {foreignKey: 'createdBy'});
+ Content.belongsTo(User, {foreignKey: 'modifiedBy'});
+ Content.belongsTo(User, {foreignKey: 'deletedBy'});
 Content.sync({force: false}).then((res) => {
     console.log('Content Table Created Successfully');
 }).catch((err) => {

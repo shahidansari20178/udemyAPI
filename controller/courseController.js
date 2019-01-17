@@ -8,7 +8,7 @@ exports.post = (body,done) => {
     body.createdAt=dateTime;
     Course.findOne({where:{category_name: body.category_name}}).then((result) => {
         if(result) {
-            done({message: 'Category Already Exist'});
+            done({message: 'Category Already Exist',status:1});
         } else {
             Course.create(body).then((newUser) => {
                 if(newUser) {

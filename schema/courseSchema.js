@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const {db} = require('../config/database');
-
+const User=require('./userSchema');
 const Course = db.define('tblCourse',{
     id:{
         type: Sequelize.INTEGER,
@@ -45,6 +45,12 @@ const Course = db.define('tblCourse',{
         allowNull: true
 }
 });
+//
+Course.belongsTo(User, {foreignKey: 'createdBy'});
+Course.belongsTo(User, {foreignKey: 'modifiedBy'});
+Course.belongsTo(User, {foreignKey: 'deletedBy'});
+
+
 
 Course.sync({force: false}).then((res) => {
     console.log('Course Table Created Successfully');
@@ -54,3 +60,10 @@ Course.sync({force: false}).then((res) => {
 })
 
 module.exports = Course;
+
+
+/*
+Product.belongsTo(Category, {foreignKey: 'cid'});
+Product.belongsTo(Sub_Category, {foreignKey: 'scid'});
+const Category = require('../schema/categoriesSchema');
+const Sub_Category = require('../schema/sub_categoriesSchema');*/

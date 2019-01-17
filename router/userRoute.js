@@ -72,7 +72,7 @@ router.put('/:id',(req,res) => {
 });
 
 router.post('/login',(req,res) => {
-   // console.log('-------'+JSON.stringify(req.user_password));
+   console.log('---router----'+req);
     postlogin( req.body,(err,result) => {
         if(err) {
             res.statusCode = 400;

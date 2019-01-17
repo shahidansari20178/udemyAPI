@@ -28,7 +28,7 @@ db.authenticate().then(() => {
     console.log(err);
 })
 
-app.listen(3001, (err) => {
+app.listen(3002, (err) => {
     if(err) {
         console.log('Error in connecting with port 3001');
     } else {

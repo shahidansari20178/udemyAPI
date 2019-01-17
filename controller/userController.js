@@ -57,7 +57,7 @@ exports.UpdateUser = (id,body,done) => {
 
     User.update({body},{where:{id:id}}).then((result) => {
         if(result) {
-           // console.log('---result---'+result.tblUser);
+            // console.log('---result---'+result.tblUser);
             done(null, result);
         }
         else {
@@ -70,15 +70,15 @@ exports.UpdateUser = (id,body,done) => {
 
 
 exports.postlogin = (body,done) => {
-    console.log('-------posTlogim========'+body.user_email);
-
-    if(!body.user_email || !body.user_password || !body.user_role)
+    /*console.log('-------posTlogim========'+body.user_email);*/
+    console.log('---controlerr----'+JSON.stringify(body));
+    if(!body.user_email || !body.user_password )
     {
         done({message: 'please provide proper value'});
     }
-    User.findOne({where: {user_email: body.user_email,user_password: body.user_password,user_role:body.user_role}}).then((result) => {
+    User.findOne({where: {user_email: body.user_email,user_password: body.user_password}}).then((result) => {
         if(result) {
-            //console.log('---result---'+result.tblUser);
+            console.log('---result123---'+result);
             done(null, result);
         }
         else {
