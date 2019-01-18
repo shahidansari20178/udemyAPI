@@ -78,7 +78,7 @@ router.delete('/:id',(req,res) => {
         }
     })
 });
-router.post('/login',(req,res) => {
+/*router.post('/login',(req,res) => {
     //console.log('0-------'+req);
     postlogin(req.body,(err,result) => {
         // console.log('0-------'+result.user_email);
@@ -97,7 +97,7 @@ router.post('/login',(req,res) => {
             }
         }
     });
-});
+});*/
 /*
 router.get('/',(req,res) => {
     getAll(routeName, (err,result) => {

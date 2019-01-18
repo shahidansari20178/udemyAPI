@@ -1,6 +1,5 @@
 const Content = require('../schema/contentSchema');
-
-
+let UPLOAD_PATH = 'media/video';
 
 
 exports.post = (body,done) => {
@@ -9,6 +8,7 @@ exports.post = (body,done) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
     body.createdAt=dateTime;
+    //body.content_path= body.file && (UPLOAD_PATH+'/'+body.file.filename),
     Content.findOne({where:{content_name: body.content_name}}).then((result) => {
         if(result) {
             done({message: 'Content Already Exist'});
@@ -64,6 +64,25 @@ exports.getAll = (body,done) => {
     });
 }
 
+
+
+exports.getCatById = (id,body,done) => {
+    //console.log('-------posTlogim========'+JSON.stringify(body));
+    Content.findOne({where:{
+            cat_id:id,isDeleted:false
+        }}).then((result) => {
+
+        if(result) {
+            //console.log('---result---'+result.tblUser);
+            done(null, result);
+        }
+        else {
+            done(err);
+        }
+    }).catch((err) => {
+        done(err);
+    });
+}
 exports.getById = (id,body,done) => {
     //console.log('-------posTlogim========'+JSON.stringify(body));
     Content.findOne({where:{

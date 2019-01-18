@@ -1,13 +1,16 @@
 const {Router} = require ('express');
 const router = Router();
 const bcrypt = require('bcryptjs');
-const {post,getAll,UpdateContent,getById,deleteContent,getAlldesc} = require ('../controller/contentController');
+const upload = require('../config/multer');
+let UPLOAD_PATH = 'media/video';
+const {post,getAll,UpdateContent,getById,deleteContent,getAlldesc,getCatById} = require ('../controller/contentController');
 //const {getAll} = require('../controller/commoncontroller');
 //const routeName = "user";
 var jwt = require('jsonwebtoken');
 var salt = bcrypt.genSaltSync(10);
 var secretKey = 'STkey'
-router.post('/',(req,res) => {
+
+router.post('/',upload(UPLOAD_PATH).single('image'),(req,res) => {
     //var hash = bcrypt.hashSync(req.body.password, salt);
     //req.body.password = hash;
     post( req.body,(err,result) => {
@@ -60,6 +63,23 @@ router.get('/:id',(req,res) => {
     }
 
 });
+router.get('/cat/:id',(req,res) => {
+    //var hash = bcrypt.hashSync(req.body.password, salt);
+    console.log('---desc11----'+JSON.stringify(req.body));
+
+        getCatById(req.params.id, req.body,(err,result) => {
+            if(err) {
+                res.statusCode = 400;
+                res.json(err);
+            } else {
+                res.statusCode = 201;
+                console.log('----result00---'+JSON.stringify(result));
+                res.json(result);
+            }
+        })
+
+});
+
 router.get('/',(req,res) => {
     //var hash = bcrypt.hashSync(req.body.password, salt);
     //req.body.password = hash;
@@ -119,4 +139,7 @@ router.get('/',(req,res) => {
     });
 });
 */
+
+
 module.exports = router;
+
