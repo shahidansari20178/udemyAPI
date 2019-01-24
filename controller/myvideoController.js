@@ -1,16 +1,17 @@
-const Course = require('../schema/courseSchema');
-
+const myVideo = require('../schema/myvideoSchema');
+const {db} = require('../config/database');
 exports.post = (body,done) => {
-    var today = new Date();
+    /*var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
-    body.createdAt=dateTime;
-    Course.findOne({where:{category_name: body.category_name}}).then((result) => {
-        if(result) {
-            done({message: 'Category Already Exist',status:1});
+    body.createdAt=dateTime;*/
+    db.query("SELECT * FROM `tblMyvideos` WHERE `content_id` = "+body.content_id+" AND `user_id` = "+body.user_id+"").spread((result) => {
+        console.log(JSON.stringify(result))
+        if(result.length > 0) {
+            done({message: 'Content Already Bought',status:1});
         } else {
-            Course.create(body).then((newUser) => {
+            myVideo.create(body).then((newUser) => {
                 if(newUser) {
                     done(null,newUser);
                 } else {
@@ -27,12 +28,10 @@ exports.post = (body,done) => {
 
 exports.getAll = (body,done) => {
     console.log('-------posTlogim========'+JSON.stringify(body));
-    Course.findAll({where:{
-            isDeleted:false
-        }}).then((result) => {
+    myVideo.findAll({}).then((result) => {
 
         if(result) {
-           // console.log('---result---'+result.tblUser);
+            // console.log('---result---'+result.tblUser);
             done(null, result);
         }
         else {
@@ -45,9 +44,7 @@ exports.getAll = (body,done) => {
 
 exports.getById = (id,body,done) => {
     //console.log('-------posTlogim========'+JSON.stringify(body));
-    Course.findOne({where:{
-        id:id,isDeleted:false
-        }}).then((result) => {
+    db.query("SELECT * FROM tblContents  where id in (SELECT content_id FROM `tblMyvideos` WHERE `user_id` ="+id+")").spread((result) => {
 
         if(result) {
             console.log('---result---'+result.tblUser);
@@ -62,7 +59,7 @@ exports.getById = (id,body,done) => {
 }
 
 
-exports.UpdateCategory = (id,body,done) => {
+/*exports.UpdateCategory = (id,body,done) => {
     //console.log('-------update========'+JSON.stringify(body.params));
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -134,7 +131,7 @@ exports.deleteCategory = (id,body,done) => {
     })
     console.log('-------delete========'+JSON.stringify(body));
 
-}
+}*/
 
 /*
 exports.authEmail = (email,done) => {

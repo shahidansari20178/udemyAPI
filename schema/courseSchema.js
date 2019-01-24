@@ -15,6 +15,7 @@ const Course = db.define('tblCourse',{
         type: Sequelize.STRING,
         allowNull: false
     },
+
     createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -32,6 +33,7 @@ const Course = db.define('tblCourse',{
         type: Sequelize.DATE,
         allowNull: true
     },
+
     isDeleted: {
     type: Sequelize.BOOLEAN,
         allowNull: true

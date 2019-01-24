@@ -1,5 +1,6 @@
 const Content = require('../schema/contentSchema');
 let UPLOAD_PATH = 'media/video';
+const {db} = require('../config/database');
 
 
 exports.post = (body,done) => {
@@ -28,6 +29,24 @@ exports.post = (body,done) => {
     })
 }
 
+
+exports.getContentByuserId = (id,body,done) => {
+    //console.log('-------posTlogim========'+JSON.stringify(body));
+    Content.findAll({where:{
+            createdBy:id,isDeleted:false
+        }}).then((result) => {
+
+        if(result) {
+            //console.log('---result---'+result.tblUser);
+            done(null, result);
+        }
+        else {
+            done(err);
+        }
+    }).catch((err) => {
+        done(err);
+    });
+}
 exports.getAlldesc = (body,done) => {
     Content.findAll({where:{
             isDeleted:false
@@ -63,12 +82,25 @@ exports.getAll = (body,done) => {
         done(err);
     });
 }
-
+exports.getCatBySearch = (body,done) => {
+    console.log("-----search----"+body.search);
+    db.query("SELECT * FROM `tblContents` WHERE `content_name` REGEXP '"+body.search+"'").spread((result) => {
+        if(result) {
+            // console.log('---result---'+result.tblUser);
+            done(null, result);
+        }
+        else {
+            done(err);
+        }
+    }).catch((err) => {
+        done(err);
+    });
+}
 
 
 exports.getCatById = (id,body,done) => {
     //console.log('-------posTlogim========'+JSON.stringify(body));
-    Content.findOne({where:{
+    Content.findAll({where:{
             cat_id:id,isDeleted:false
         }}).then((result) => {
 

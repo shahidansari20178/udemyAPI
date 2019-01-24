@@ -25,6 +25,10 @@ const Content = db.define('tblContent',{
     type: Sequelize.STRING,
         allowNull: false
 },
+    fees: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+    },
     cat_id: {
         type: Sequelize.INTEGER,
         allowNull: false

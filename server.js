@@ -11,6 +11,7 @@ const {db} = require('./config/database');
 const userRoute = require('./router/userRoute');
 const courseRoute = require('./router/courseRoute');
 const contentRoute = require('./router/ContentRoute');
+const myvideoRoute = require('./router/myvideoRoute');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use('/user',userRoute);
 app.use('/course',courseRoute);
 app.use('/content',contentRoute);
+app.use('/myvideo',myvideoRoute);
 
 db.authenticate().then(() => {
     console.log("Database connected");
