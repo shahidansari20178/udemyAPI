@@ -9,7 +9,10 @@ exports.post = (body,done) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
     body.createdAt=dateTime;
-    //body.content_path= body.file && (UPLOAD_PATH+'/'+body.file.filename),
+    console.log(JSON.stringify(body))
+    console.log("path=>"+UPLOAD_PATH+'/'+body.file)
+   // body.content_path= body.file && (UPLOAD_PATH+'/'+body.file.filename),
+        //console.log(JSON.stringify(body))
     Content.findOne({where:{content_name: body.content_name}}).then((result) => {
         if(result) {
             done({message: 'Content Already Exist'});

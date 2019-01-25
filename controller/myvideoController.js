@@ -6,7 +6,7 @@ exports.post = (body,done) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
     body.createdAt=dateTime;*/
-    db.query("SELECT * FROM `tblMyvideos` WHERE `content_id` = "+body.content_id+" AND `user_id` = "+body.user_id+"").spread((result) => {
+    db.query("SELECT * FROM `tblMyvideos` WHERE `content_id` = "+body.content_id+" AND `user_id` = "+body.user_id+" AND isDeleted=false").spread((result) => {
         console.log(JSON.stringify(result))
         if(result.length > 0) {
             done({message: 'Content Already Bought',status:1});
@@ -28,7 +28,7 @@ exports.post = (body,done) => {
 
 exports.getAll = (body,done) => {
     console.log('-------posTlogim========'+JSON.stringify(body));
-    myVideo.findAll({}).then((result) => {
+    myVideo.findAll({where:{isDeleted:false}}).then((result) => {
 
         if(result) {
             // console.log('---result---'+result.tblUser);
@@ -44,7 +44,7 @@ exports.getAll = (body,done) => {
 
 exports.getById = (id,body,done) => {
     //console.log('-------posTlogim========'+JSON.stringify(body));
-    db.query("SELECT * FROM tblContents  where id in (SELECT content_id FROM `tblMyvideos` WHERE `user_id` ="+id+")").spread((result) => {
+    db.query("SELECT c.* FROM tblContents as c  where id in (SELECT content_id FROM `tblMyvideos` WHERE isDeleted=false and `user_id` ="+id+")").spread((result) => {
 
         if(result) {
             console.log('---result---'+result.tblUser);
@@ -97,23 +97,20 @@ exports.getById = (id,body,done) => {
 
 
 
-}
+}*/
 
-exports.deleteCategory = (id,body,done) => {
-
-    body.deletedAt=new Date().toDateString();
-    body.isDeleted=true;
-    console.log('---id--'+id);
-    Course.findOne({where:{isDeleted: true,id:id}}).then((result) => {
+exports.deleteVideo = (id,body,done) => {
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    console.log(id+'---userid--'+body.user_id);
+    /*myVideo.findOne({where:{isDeleted: true,id:id}}).then((result) => {
         if(result) {
             done({message: 'Category already deleted'});
-        } else {
-            if(!body.deletedBy)
-            {
-                done({message: 'please pass deleter Id'});
-            }
-            else {
-                Course.update(body, {where: {id: id}}).then((result) => {
+        } else {*/
+
+            db.query("update tblMyvideos set isDeleted=true,deletedAt='"+dateTime+"' where content_id="+id+" and user_id="+body.user_id+"").spread((result) => {
                     if (result) {
                         // console.log('---result---'+result.tblUser);
                         done(null, result);
@@ -124,14 +121,13 @@ exports.deleteCategory = (id,body,done) => {
                 }).catch((err) => {
                     done(err);
                 });
-            }
-        }
+       /* }
     }).catch((err)=>{
         done(err);
-    })
+    })*/
     console.log('-------delete========'+JSON.stringify(body));
 
-}*/
+}
 
 /*
 exports.authEmail = (email,done) => {

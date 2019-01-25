@@ -1,7 +1,6 @@
 var multer = require('multer');
-let UPLOAD_PATH = 'media';
-
-
+let UPLOAD_PATH = 'public';
+var filepath='';
 const storage = storageDest =>multer.diskStorage({
     destination: function (req, file, cb) {
 
@@ -10,11 +9,15 @@ const storage = storageDest =>multer.diskStorage({
     filename: function (req, file, cb) {
         let extArray = file.originalname.split(".");
         let extension = extArray[extArray.length - 1];
-//console.log(file);
-        cb(null, file.originalname + '-' + Date.now()+ '.' +extension)
+        filepath="public/"+Date.now()+ '.' +extension;
+        console.log(filepath);
+        console.log(file);
+
+        cb(null,Date.now()+ '.' +extension)
     }
 });
 
 const upload = storageDest=>multer({ storage: storage(storageDest) });
 console.log(upload)
-module.exports = upload
+console.log(filepath)
+module.exports = upload,filepath

@@ -16,6 +16,17 @@ const myVideo = db.define('tblMyvideo',{
         type: Sequelize.INTEGER,
         allowNull: false
     }
+    ,
+    isDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        default:false
+    },
+    deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
+    },
+
 });
 myVideo.belongsTo(Content, {foreignKey: 'content_id'});
 myVideo.belongsTo(User, {foreignKey: 'user_id'});

@@ -2,7 +2,7 @@ const {Router} = require ('express');
 const router = Router();
 const bcrypt = require('bcryptjs');
 const upload = require('../config/multer');
-let UPLOAD_PATH = 'media/video';
+let UPLOAD_PATH = 'public';
 const {post,getAll,UpdateContent,getById,deleteContent,getAlldesc,getCatById,getCatBySearch,getContentByuserId} = require ('../controller/contentController');
 //const {getAll} = require('../controller/commoncontroller');
 //const routeName = "user";
@@ -10,10 +10,14 @@ var jwt = require('jsonwebtoken');
 var salt = bcrypt.genSaltSync(10);
 var secretKey = 'STkey'
 
-router.post('/',upload(UPLOAD_PATH).single('image'),(req,res) => {
+router.post('/',upload(UPLOAD_PATH).single('content_path'),(req,res) => {
+    //console.log("hellohelo"+JSON.stringify(req))
     //var hash = bcrypt.hashSync(req.body.password, salt);
     //req.body.password = hash;
+    console.log(req.body)
+    console.log("s"+req.body.file)
     post( req.body,(err,result) => {
+
         if(err) {
             res.statusCode = 400;
             res.json(err);
@@ -79,7 +83,7 @@ router.get('/user/:id',(req,res) => {
         })
 
 });
-router.get('/user/:id',(req,res) => {
+router.get('/cat/:id',(req,res) => {
     //var hash = bcrypt.hashSync(req.body.password, salt);
 
 
